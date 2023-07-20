@@ -2,9 +2,9 @@ import java.util.List;
 
 public class Tile {
     Entity entity;
-    List<Coordinates> availableMoves;
+    List<EntityCoordinate> availableMoves;
 
-    public Tile(Entity entity, List<Coordinates> moves) {
+    public Tile(Entity entity, List<EntityCoordinate> moves) {
         this.entity = entity;
         this.availableMoves = moves;
     }
@@ -21,7 +21,7 @@ public class Tile {
         this.entity = null;
     }
 
-    public List<Coordinates> getAvailableMoves() {
+    public List<EntityCoordinate> getAvailableMoves() {
         return availableMoves;
     }
 }

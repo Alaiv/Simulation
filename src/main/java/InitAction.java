@@ -31,15 +31,15 @@ public class InitAction {
         );
 
 
-        entities.forEach((e) -> {
-            Coordinates c = Coordinates.getRandomCoordinate(map.ROWS_COUNT, map.COLUMN_COUNT);
-
-            while (map.isCellTaken(c)) {
-                c = Coordinates.getRandomCoordinate(map.ROWS_COUNT, map.COLUMN_COUNT);
-            }
-
-            map.addEntity(c, e);
-        });
+//        entities.forEach((e) -> {
+//            Coordinates c = Coordinates.getRandomCoordinate(map.ROWS_COUNT, map.COLUMN_COUNT);
+//
+//            while (map.isCellTaken(c)) {
+//                c = Coordinates.getRandomCoordinate(map.ROWS_COUNT, map.COLUMN_COUNT);
+//            }
+//
+//            map.addEntity(c, e);
+//        });
 
 
     }

@@ -6,7 +6,7 @@ public class ConsoleRenderer {
         for (int i = 0; i < rows; i++) {
             res += "|";
             for (int j = 0; j < cols; j++) {
-                Coordinates coordinate = new Coordinates(i, j);
+                EntityCoordinate coordinate = new EntityCoordinate(i, j);
                 Entity ent = map.getEntity(coordinate);
                 if (ent != null) {
                     switch (ent.getType()) {

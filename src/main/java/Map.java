@@ -1,10 +1,8 @@
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Map {
-    private final HashMap<Coordinates, Tile> map = new HashMap<>();
+    private final HashMap<EntityCoordinate, Tile> map = new HashMap<>();
     private int amount = 0;
     private final int MAX_AMOUNT = 100;
 
@@ -14,13 +12,16 @@ public class Map {
     public Map() {
         for (int i = 0; i < ROWS_COUNT; i++) {
             for (int j = 0; j < COLUMN_COUNT; j++) {
-                Coordinates coordinate = new Coordinates(i, j);
-                List<Coordinates> moves = Stream.of(
-                        new Coordinates(i + 1, j),
-                        new Coordinates(i - 1, j),
-                        new Coordinates(i, j + 1),
-                        new Coordinates(i, j - 1)
-                ).filter(item -> item.getY() >= 0 && item.getX() >= 0).toList();
+                EntityCoordinate coordinate = new EntityCoordinate(i, j);
+                List<EntityCoordinate> moves = Stream.of(
+                        new EntityCoordinate(i + 1, j),
+                        new EntityCoordinate(i - 1, j),
+                        new EntityCoordinate(i, j + 1),
+                        new EntityCoordinate(i, j - 1)
+                )
+                        .filter(item -> item.getY() >= 0 && item.getX() >= 0)
+                        .filter(item -> item.getY() < COLUMN_COUNT && item.getX() < ROWS_COUNT)
+                        .toList();
 
                 Tile tile = new Tile(null, moves);
 
@@ -29,9 +30,11 @@ public class Map {
         }
     }
 
-    public void addEntity (Coordinates cord, Entity ent) {
+    public void addEntity (EntityCoordinate cord, Entity ent) {
         map.get(cord).setEntity(ent);
-
+        if(ent instanceof Creature) {
+            ((Creature) ent).setCurrentCoordinate(cord);
+        }
         amount += 1;
     }
 
@@ -39,20 +42,46 @@ public class Map {
         return amount;
     }
 
-    public void removeEntity (Coordinates cord) {
+    public void removeEntity (EntityCoordinate cord) {
         map.get(cord).removeEntity();
         amount -= 1;
     }
 
-    public Entity getEntity(Coordinates cord) {
+    public Entity getEntity(EntityCoordinate cord) {
         return map.get(cord).getEntity();
     }
 
-    public boolean isCellTaken(Coordinates cord) {
+    public boolean isCellTaken(EntityCoordinate cord) {
         return map.get(cord).getEntity() != null;
     }
 
     public boolean isFull() {
         return amount == MAX_AMOUNT;
+    }
+
+    public void dfs(Character item, EntityCoordinate cord) {
+        Queue<EntityCoordinate> cords = new PriorityQueue<>();
+        cords.add(cord);
+        Set<EntityCoordinate> visited = new HashSet<>();
+
+        while (cords.size() > 0) {
+            EntityCoordinate location = cords.remove();
+            Entity ent = this.getEntity(location);
+            visited.add(location);
+
+            if (ent != null && ent.getType() == item) {
+                System.out.println(location.toString());
+                return;
+            }
+
+            Tile tile = this.map.get(location);
+            List<EntityCoordinate> availableMoves = tile.getAvailableMoves();
+            availableMoves.forEach(c -> {
+                if(!visited.contains(c)) {
+                    cords.add(c);
+                }
+            });
+        }
+        System.out.println("Nothing!");
     }
 }

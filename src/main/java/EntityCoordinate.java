@@ -1,8 +1,8 @@
-public class Coordinates {
+public class EntityCoordinate implements Comparable<EntityCoordinate> {
     private final Integer x;
     private final Integer y;
 
-    public Coordinates(Integer x, Integer y) {
+    public EntityCoordinate(Integer x, Integer y) {
         this.x = x;
         this.y = y;
     }
@@ -16,11 +16,11 @@ public class Coordinates {
         return y;
     }
 
-    public static Coordinates getRandomCoordinate(int r, int c) {
+    public static EntityCoordinate getRandomCoordinate(int r, int c) {
         int x = (int)(Math.random() * r);
         int y = (int)(Math.random() * c);
 
-        return new Coordinates(x, y);
+        return new EntityCoordinate(x, y);
 
     }
 
@@ -34,9 +34,19 @@ public class Coordinates {
         if (obj == this) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
 
-        int objX = ((Coordinates) obj).getX();
-        int objY = ((Coordinates) obj).getY();
+        int objX = ((EntityCoordinate) obj).getX();
+        int objY = ((EntityCoordinate) obj).getY();
 
         return objX == getX() && objY == getY();
+    }
+
+    @Override
+    public String toString() {
+        return this.getX() + " " + this.getY();
+    }
+
+    @Override
+    public int compareTo(EntityCoordinate o) {
+        return this.getX() - o.getX();
     }
 }
