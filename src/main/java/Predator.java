@@ -6,13 +6,14 @@ public class Predator extends Creature {
     }
 
     //to-do
-    @Override
-    public void makeMove() {
-        System.out.println("Moving as predator");
-    }
 
     @Override
     public Character getType() {
         return 'P';
+    }
+
+    @Override
+    public void makeMove(Map map, Coordinate start) {
+
     }
 }

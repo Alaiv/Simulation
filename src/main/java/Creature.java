@@ -2,20 +2,21 @@ public abstract class Creature extends Entity{
     private int speed;
     private int health;
 
-    private EntityCoordinate currentCoordinate;
+    private Coordinate currentCoordinate;
 
     public Creature(int speed, int health) {
         this.speed = speed;
         this.health = health;
     }
 
-    public abstract void makeMove();
 
-    public EntityCoordinate getCurrentCoordinate() {
+    public Coordinate getCurrentCoordinate() {
         return currentCoordinate;
     }
 
-    public void setCurrentCoordinate(EntityCoordinate currentCoordinate) {
+    public void setCurrentCoordinate(Coordinate currentCoordinate) {
         this.currentCoordinate = currentCoordinate;
     }
+
+    public abstract void makeMove(Map map, Coordinate start);
 }

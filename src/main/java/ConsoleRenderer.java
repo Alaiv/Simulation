@@ -6,28 +6,10 @@ public class ConsoleRenderer {
         for (int i = 0; i < rows; i++) {
             res += "|";
             for (int j = 0; j < cols; j++) {
-                EntityCoordinate coordinate = new EntityCoordinate(i, j);
+                Coordinate coordinate = new Coordinate(i, j);
                 Entity ent = map.getEntity(coordinate);
                 if (ent != null) {
-                    switch (ent.getType()) {
-                        case 'H':
-                            res += 'H';
-                            break;
-                        case 'P':
-                            res += 'P';
-                            break;
-                        case 'G':
-                            res += 'G';
-                            break;
-                        case 'R':
-                            res += 'R';
-                            break;
-                        case 'T':
-                            res += 'T';
-                            break;
-                        default:
-                            res += ' ';
-                    }
+                    res += ent.getType();
                 } else {
                     res += ' ';
                 }
