@@ -1,3 +1,8 @@
+import Renderers.ConsoleRenderer;
+import actions.InitAction;
+import actions.TurnAction;
+import location.Map;
+
 import java.util.List;
 
 public class Main {

@@ -1,3 +1,8 @@
+package Renderers;
+
+import location.Coordinate;
+import location.Map;
+
 public class ConsoleRenderer {
     public void render(Map map, int rows, int cols) {
 

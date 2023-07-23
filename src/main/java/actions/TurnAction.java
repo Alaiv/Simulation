@@ -1,3 +1,8 @@
+package actions;
+
+import Renderers.Creature;
+import location.Map;
+
 import java.util.List;
 
 public class TurnAction {

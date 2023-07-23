@@ -1,3 +1,8 @@
+package location;
+
+import Renderers.*;
+import location.Coordinate;
+
 import java.util.*;
 import java.util.List;
 import java.util.stream.Stream;
@@ -10,7 +15,7 @@ public class Map {
     private final int MAX_AMOUNT = 100;
 
     public final int ROWS_COUNT = 10;
-    public final int COLUMN_COUNT = 10;
+    public final int COLUMN_COUNT = 30;
     private List<Tile> stuff;
 
     public int getGrassAmount() {
@@ -148,7 +153,7 @@ public class Map {
         }
     }
 
-    public Coordinate checkForPath(Coordinate start) {
+    public List<Coordinate> checkForPath(Coordinate start) {
         Tile end = this.stuff.stream().min(Comparator.comparingInt(Tile::getPathWeight)).get();
         List<Coordinate> path = new ArrayList<>();
 
@@ -157,7 +162,7 @@ public class Map {
             end = getTile(end.getPrevLocation());
         }
 
-        System.out.println(Arrays.toString(path.stream().map(Coordinate::toString).toArray()));
-        return path.get(path.size() - 1);
+//        System.out.println(Arrays.toString(path.stream().map(Coordinate::toString).toArray()));
+        return path;
     }
 }

@@ -1,3 +1,5 @@
+package location;
+
 public class Coordinate implements Comparable<Coordinate> {
     private final Integer x;
     private final Integer y;

@@ -1,4 +1,8 @@
-import java.util.ArrayList;
+package location;
+
+import Renderers.Entity;
+import location.Coordinate;
+
 import java.util.List;
 
 public class Tile {
