@@ -5,7 +5,22 @@ public class Tile {
     Entity entity;
     List<Coordinate> availableMoves;
     private int pathWeight = 0;
-    private List<Coordinate> prevCord = new ArrayList<>();
+    private Coordinate tileCoordinate;
+
+    private Coordinate prevLocation;
+
+    public Coordinate getPrevLocation() {
+        return prevLocation;
+    }
+
+    public void setPrevLocation(Coordinate prevLocation) {
+        this.prevLocation = prevLocation;
+    }
+
+    public Tile(Entity entity, List<Coordinate> moves) {
+        this.entity = entity;
+        this.availableMoves = moves;
+    }
 
     public Coordinate getTileCoordinate() {
         return tileCoordinate;
@@ -15,7 +30,6 @@ public class Tile {
         this.tileCoordinate = tileCoordinate;
     }
 
-    private Coordinate tileCoordinate;
 
     public int getPathWeight() {
         return pathWeight;
@@ -25,34 +39,21 @@ public class Tile {
         this.pathWeight = pathWeight;
     }
 
-    public List<Coordinate> getPrevCord() {
-        return prevCord;
-    }
-
-    public void setPrevCord(Coordinate prevCord) {
-        this.prevCord.add(prevCord);
-    }
-
-
-    public Tile(Entity entity, List<Coordinate> moves) {
-        this.entity = entity;
-        this.availableMoves = moves;
-    }
 
     public Entity getEntity() {
         return entity;
     }
 
     public void setEntity(Entity entity) {
-        this.prevCord.clear();
         this.setPathWeight(0);
         this.entity = entity;
+        this.prevLocation = null;
     }
 
     public void removeEntity() {
-        this.prevCord.clear();
         this.setPathWeight(0);
         this.entity = null;
+        this.prevLocation = null;
     }
 
     public List<Coordinate> getAvailableMoves() {

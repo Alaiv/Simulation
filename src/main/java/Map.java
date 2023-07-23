@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Stream;
@@ -6,10 +5,21 @@ import java.util.stream.Stream;
 public class Map {
     private final HashMap<Coordinate, Tile> map = new HashMap<>();
     private int amount = 0;
+    private int grassAmount = 0;
+    private int herbivoreAmount = 0;
     private final int MAX_AMOUNT = 100;
 
     public final int ROWS_COUNT = 10;
     public final int COLUMN_COUNT = 10;
+    private List<Tile> stuff;
+
+    public int getGrassAmount() {
+        return grassAmount;
+    }
+
+    public int getHerbivoreAmount() {
+        return herbivoreAmount;
+    }
 
     public Map() {
         for (int i = 0; i < ROWS_COUNT; i++) {
@@ -34,9 +44,18 @@ public class Map {
     }
 
     public void addEntity(Coordinate cord, Entity ent) {
-        map.get(cord).setEntity(ent);
+        this.getTile(cord).setEntity(ent);
+
         if (ent instanceof Creature) {
             ((Creature) ent).setCurrentCoordinate(cord);
+        }
+
+        if (ent instanceof Herbivore) {
+            this.herbivoreAmount++;
+        }
+
+        if (ent instanceof Grass) {
+            this.grassAmount++;
         }
         amount += 1;
     }
@@ -50,7 +69,16 @@ public class Map {
     }
 
     public void removeEntity(Coordinate cord) {
-        map.get(cord).removeEntity();
+        Tile t = this.getTile(cord);
+        if (t.getEntity() instanceof Herbivore) {
+            this.herbivoreAmount--;
+        }
+
+        if (t.getEntity() instanceof Grass) {
+            this.grassAmount--;
+        }
+
+        t.removeEntity();
         amount -= 1;
     }
 
@@ -79,59 +107,57 @@ public class Map {
     }
 
 
-    public Coordinate dfs(Character item, Coordinate cord) {
+    public void dfs(Character item, Coordinate cord) {
+        this.stuff = new ArrayList<>();
         Queue<Coordinate> cords = new PriorityQueue<>();
         cords.add(cord);
         Set<Coordinate> visited = new HashSet<>();
+        visited.add(cord);
 
         while (cords.size() > 0) {
             Coordinate location = cords.remove();
             Entity ent = this.getEntity(location);
-            visited.add(location);
             Tile tile = this.map.get(location);
 
-            if (ent != null && ent.getType() == item) {
-                return location;
+            if (ent != null && ent.getType() == item && !stuff.contains(tile)) {
+                stuff.add(tile);
             }
-
 
             List<Coordinate> availableMoves = tile.getAvailableMoves();
 
             availableMoves.forEach(c -> {
-                if (!visited.contains(c) && !cellIsTaken(c) || getEntity(c) != null && getEntity(c).getType() == item) {
+                if (!visited.contains(c) && (!cellIsTaken(c) || (getEntity(c) != null && getEntity(c).getType() == item))) {
                     Tile t = this.map.get(c);
                     t.setPathWeight(tile.getPathWeight() + 1);
-                    if (!t.getPrevCord().contains(location))
-                        t.setPrevCord(location);
+                    t.setPrevLocation(location);
                     cords.add(c);
+                    visited.add(c);
+                }
+
+                if (getEntity(c) != null && getEntity(c).getType() == item) {
+                    Tile t = this.map.get(c);
+                    int prevPathWeight = getTile(t.getPrevLocation()).getPathWeight();
+                    int newWeight = Math.min(prevPathWeight, tile.getPathWeight());
+                    Coordinate newPrevCord = tile.getPathWeight() < prevPathWeight ? location : t.getPrevLocation();
+
+                    t.setPrevLocation(newPrevCord);
+                    t.setPathWeight(newWeight);
                 }
             });
 
         }
-        return null;
     }
 
-    public Tile getNextTileCoordinate(Coordinate coordinate, Coordinate start) {
+    public Coordinate checkForPath(Coordinate start) {
+        Tile end = this.stuff.stream().min(Comparator.comparingInt(Tile::getPathWeight)).get();
+        List<Coordinate> path = new ArrayList<>();
 
-        Boolean found = false;
-        Tile tile = getTile(coordinate);
-        List<Tile> res = new ArrayList<>();
-
-        while (!found) {
-            Tile ts = tile.getPrevCord().stream()
-                    .map(this::getTile)
-                    .filter(Objects::nonNull)
-                    .min(Comparator.comparingInt(Tile::getPathWeight))
-                    .get();
-            res.add(ts);
-            tile = ts;
-
-            if (tile.getPrevCord().contains(start)) {
-                found = true;
-            }
+        while (!end.getTileCoordinate().equals(start)) {
+            path.add(end.getTileCoordinate());
+            end = getTile(end.getPrevLocation());
         }
 
-        System.out.println(Arrays.toString(res.stream().map(x -> x.getTileCoordinate().toString()).toArray()));
-        return tile;
+        System.out.println(Arrays.toString(path.stream().map(Coordinate::toString).toArray()));
+        return path.get(path.size() - 1);
     }
 }

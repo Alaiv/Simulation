@@ -30,6 +30,7 @@ public class Simulation {
             turnActions.forEach(tAction -> tAction.makeOneRotation(map));
             renderer.render(this.map, this.map.ROWS_COUNT, this.map.COLUMN_COUNT);
             sc.nextLine();
+            this.stepCounter++;
         }
     }
 
