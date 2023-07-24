@@ -1,7 +1,6 @@
 package location;
 
-import Renderers.Entity;
-import location.Coordinate;
+import entities.Entity;
 
 import java.util.List;
 

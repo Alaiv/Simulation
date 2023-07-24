@@ -1,20 +1,18 @@
-package Renderers;
+package entities;
 
 import location.Coordinate;
 import location.Map;
 
 public class Predator extends Creature {
-    private int damage;
+    private final int damage;
     public Predator(int speed, int health, int damage) {
         super(speed, health);
         this.damage = damage;
     }
 
-    //to-do
-
     @Override
-    public Character getType() {
-        return 'P';
+    public EntityTypes getType() {
+        return EntityTypes.PREDATOR;
     }
 
     @Override
@@ -22,8 +20,8 @@ public class Predator extends Creature {
         if (map.getHerbivoreAmount() == 0)
             return;
 
-        map.dfs('H', start);
-        Coordinate newTileCoordinate = this.checkTilesForMoves(map.checkForPath(start), 'H', map);
+        map.dfs(EntityTypes.HERBIVORE, start);
+        Coordinate newTileCoordinate = this.checkTilesForMoves(map.checkForPath(start), EntityTypes.HERBIVORE, map);
         Entity ent = map.getEntity(newTileCoordinate);
 
         if (ent instanceof Herbivore) {

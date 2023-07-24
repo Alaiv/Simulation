@@ -1,47 +1,29 @@
 package actions;
 
-import Renderers.*;
-import location.Coordinate;
+import entities.*;
 import location.Map;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InitAction {
 
-
-    public void setEntities(Map map) {
-
-
-        List<Entity> entities = List.of(
-                new Renderers.Predator(2, 10, 10),
-                new Herbivore(3, 10),
-                new Herbivore(1, 15),
-                new Renderers.Herbivore(2, 25),
-                new Renderers.Herbivore(1, 5),
-                new Grass(),
-                new Grass(),
-                new Renderers.Grass(),
-                new Renderers.Grass(),
-                new Renderers.Rock(),
-                new Renderers.Rock(),
-                new Renderers.Tree()
-        );
+    public void activate(Map map) {
 
 
-        entities.forEach((e) -> {
-            Coordinate c = Coordinate.getRandomCoordinate(map.ROWS_COUNT, map.COLUMN_COUNT);
+        List<Entity> entities = new ArrayList<>();
+        EntityCreator creator = new EntityCreator();
 
-            while (map.cellIsTaken(c)) {
-                c = Coordinate.getRandomCoordinate(map.ROWS_COUNT, map.COLUMN_COUNT);
-            }
-
-            map.addEntity(c, e);
-            if (e instanceof Creature) {
-                ((Creature) e).setCurrentCoordinate(c);
-            }
-        });
+        for (int i = 0; i < 4; i++) {
+            entities.add(creator.createNewEntity(EntityTypes.HERBIVORE));
+            entities.add(creator.createNewEntity(EntityTypes.GRASS));
+            entities.add(creator.createNewEntity(EntityTypes.PREDATOR));
+            entities.add(creator.createNewEntity(EntityTypes.ROCK));
+            entities.add(creator.createNewEntity(EntityTypes.TREE));
+        }
 
 
+        EntityPlacer placer = new EntityPlacer();
+        placer.placeEntities(entities, map);
     }
-
 }

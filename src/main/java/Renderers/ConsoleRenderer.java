@@ -1,5 +1,6 @@
 package Renderers;
 
+import entities.Entity;
 import location.Coordinate;
 import location.Map;
 
@@ -14,7 +15,7 @@ public class ConsoleRenderer {
                 Coordinate coordinate = new Coordinate(i, j);
                 Entity ent = map.getEntity(coordinate);
                 if (ent != null) {
-                    res += ent.getType();
+                    res += ent.getType().name().charAt(0);
                 } else {
                     res += ' ';
                 }

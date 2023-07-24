@@ -1,7 +1,6 @@
 package location;
 
-import Renderers.*;
-import location.Coordinate;
+import entities.*;
 
 import java.util.*;
 import java.util.List;
@@ -112,7 +111,7 @@ public class Map {
     }
 
 
-    public void dfs(Character item, Coordinate cord) {
+    public void dfs(EntityTypes item, Coordinate cord) {
         this.stuff = new ArrayList<>();
         Queue<Coordinate> cords = new PriorityQueue<>();
         cords.add(cord);
@@ -124,7 +123,7 @@ public class Map {
             Entity ent = this.getEntity(location);
             Tile tile = this.map.get(location);
 
-            if (ent != null && ent.getType() == item && !stuff.contains(tile)) {
+            if (ent != null && ent.getType().equals(item) && !stuff.contains(tile)) {
                 stuff.add(tile);
             }
 

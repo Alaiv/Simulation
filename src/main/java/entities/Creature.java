@@ -1,4 +1,4 @@
-package Renderers;
+package entities;
 
 import location.Coordinate;
 import location.Map;
@@ -33,19 +33,18 @@ public abstract class Creature extends Entity {
 
     public abstract void makeMove(Map map, Coordinate start);
 
-    public Coordinate checkTilesForMoves(List<Coordinate> list, Character item, Map map) {
+    public Coordinate checkTilesForMoves(List<Coordinate> list, EntityTypes item, Map map) {
         List<Coordinate> moves = new ArrayList<>(List.copyOf(list));
         Collections.reverse(moves);
         moves = moves.subList(0, Math.min(this.getSpeed(), moves.size()));
         Coordinate result = moves.get(moves.size() - 1);
 
-        System.out.println(Arrays.toString(moves.stream().map(Coordinate::toString).toArray()));
 
         for (var move : moves) {
-            if (map.getEntity(move) != null && map.getEntity(move).getType() == item)
+            if (map.getEntity(move) != null && map.getEntity(move).getType().equals(item))
                 result = move;
         }
-        System.out.println(result.toString());
+
         return result;
     }
 }
