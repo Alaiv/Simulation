@@ -1,26 +1,24 @@
 package actions;
 
-import entities.*;
+import entities.Entity;
+import entities.EntityCreator;
+import entities.EntityPlacer;
+import entities.EntityTypes;
 import location.Map;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TurnAction {
-    public void makeOneRotation(Map map) {
-        List<Creature> creatures = map.getCreaturesList();
+public abstract class TurnAction {
 
-        creatures.forEach(c -> {
-            c.makeMove(map, c.getCurrentCoordinate());
-        });
-    }
+    public abstract void makeOneRotation(Map map);
 
     protected void addAndPlaceEntities(EntityTypes type, Map map) {
         List<Entity> entities = new ArrayList<>();
         EntityCreator creator = new EntityCreator();
 
         for (int i = 0; i < 3; i++) {
-            entities.add(creator.createNewEntity(type));
+            entities.add(creator.createNewEntityWithRandomStats(type));
         }
 
         EntityPlacer placer = new EntityPlacer();

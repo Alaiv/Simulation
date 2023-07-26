@@ -1,6 +1,9 @@
 package actions;
 
-import entities.*;
+import entities.Entity;
+import entities.EntityCreator;
+import entities.EntityPlacer;
+import entities.EntityTypes;
 import location.Map;
 
 import java.util.ArrayList;
@@ -15,11 +18,11 @@ public class InitAction {
         EntityCreator creator = new EntityCreator();
 
         for (int i = 0; i < 4; i++) {
-            entities.add(creator.createNewEntity(EntityTypes.HERBIVORE));
-            entities.add(creator.createNewEntity(EntityTypes.GRASS));
-            entities.add(creator.createNewEntity(EntityTypes.PREDATOR));
-            entities.add(creator.createNewEntity(EntityTypes.ROCK));
-            entities.add(creator.createNewEntity(EntityTypes.TREE));
+            entities.add(creator.createNewEntityWithRandomStats(EntityTypes.HERBIVORE));
+            entities.add(creator.createNewEntityWithRandomStats(EntityTypes.GRASS));
+            entities.add(creator.createNewEntityWithRandomStats(EntityTypes.PREDATOR));
+            entities.add(creator.createNewEntityWithRandomStats(EntityTypes.ROCK));
+            entities.add(creator.createNewEntityWithRandomStats(EntityTypes.TREE));
         }
 
 

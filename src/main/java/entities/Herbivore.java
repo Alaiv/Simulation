@@ -15,8 +15,7 @@ public class Herbivore extends Creature {
 
     @Override
     public void makeMove(Map map, Coordinate start) {
-        if (this.health < 0)
-        {
+        if (this.health < 0) {
             map.removeEntity(this.getCurrentCoordinate());
             return;
         }

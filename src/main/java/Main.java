@@ -1,20 +1,25 @@
 import Renderers.ConsoleRenderer;
-import actions.InitAction;
-import actions.RefillGrassAction;
-import actions.RefillHerbivoreAction;
-import actions.TurnAction;
+import actions.*;
 import location.Map;
 
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
+        System.out.println("𓃵");
+
         Map map = new Map();
         List<InitAction> initActions = List.of(new InitAction());
-        List<TurnAction> turnAction = List.of(new TurnAction(), new RefillGrassAction(), new RefillHerbivoreAction());
+        List<TurnAction> turnAction = List.of(new MoveAction(), new RefillGrassAction(), new RefillHerbivoreAction());
         ConsoleRenderer renderer = new ConsoleRenderer();
         Simulation sim = new Simulation(map, initActions, turnAction, renderer);
 
-        sim.startSimulation();
+        try{
+            sim.startSimulation();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

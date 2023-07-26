@@ -9,8 +9,12 @@ public class Tile {
     List<Coordinate> availableMoves;
     private int pathWeight = 0;
     private Coordinate tileCoordinate;
-
     private Coordinate prevLocation;
+
+    public Tile(Entity entity, List<Coordinate> moves) {
+        this.entity = entity;
+        this.availableMoves = moves;
+    }
 
     public Coordinate getPrevLocation() {
         return prevLocation;
@@ -18,11 +22,6 @@ public class Tile {
 
     public void setPrevLocation(Coordinate prevLocation) {
         this.prevLocation = prevLocation;
-    }
-
-    public Tile(Entity entity, List<Coordinate> moves) {
-        this.entity = entity;
-        this.availableMoves = moves;
     }
 
     public Coordinate getTileCoordinate() {

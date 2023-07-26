@@ -3,11 +3,9 @@ package location;
 import entities.*;
 
 import java.util.*;
-import java.util.List;
-import java.util.stream.Stream;
 
 public class Map {
-    private final HashMap<Coordinate, Tile> map = new HashMap<>();
+    private final HashMap<Coordinate, Tile> map;
     private int amount = 0;
     private int grassAmount = 0;
     private int herbivoreAmount = 0;
@@ -15,7 +13,7 @@ public class Map {
 
     public final int ROWS_COUNT = 10;
     public final int COLUMN_COUNT = 30;
-    private List<Tile> stuff;
+    private List<Tile> tilesWithDestinations;
 
     public int getGrassAmount() {
         return grassAmount;
@@ -26,25 +24,7 @@ public class Map {
     }
 
     public Map() {
-        for (int i = 0; i < ROWS_COUNT; i++) {
-            for (int j = 0; j < COLUMN_COUNT; j++) {
-                Coordinate coordinate = new Coordinate(i, j);
-                List<Coordinate> moves = Stream.of(
-                                new Coordinate(i + 1, j),
-                                new Coordinate(i - 1, j),
-                                new Coordinate(i, j + 1),
-                                new Coordinate(i, j - 1)
-                        )
-                        .filter(item -> item.getY() >= 0 && item.getX() >= 0)
-                        .filter(item -> item.getY() < COLUMN_COUNT && item.getX() < ROWS_COUNT)
-                        .toList();
-
-                Tile tile = new Tile(null, moves);
-                tile.setTileCoordinate(coordinate);
-
-                map.put(coordinate, tile);
-            }
-        }
+        this.map = MapFactory.createMap(ROWS_COUNT, COLUMN_COUNT);
     }
 
     public void addEntity(Coordinate cord, Entity ent) {
@@ -99,20 +79,20 @@ public class Map {
     }
 
     public List<Creature> getCreaturesList() {
-        List<Creature> ents = new ArrayList<>();
+        List<Creature> creatureList = new ArrayList<>();
 
         for (Tile value : map.values()) {
             if (value.getEntity() != null && value.getEntity() instanceof Creature) {
-                ents.add((Creature) value.getEntity());
+                creatureList.add((Creature) value.getEntity());
             }
         }
 
-        return ents;
+        return creatureList;
     }
 
 
     public void dfs(EntityTypes item, Coordinate cord) {
-        this.stuff = new ArrayList<>();
+        this.tilesWithDestinations = new ArrayList<>();
         Queue<Coordinate> cords = new PriorityQueue<>();
         cords.add(cord);
         Set<Coordinate> visited = new HashSet<>();
@@ -123,8 +103,8 @@ public class Map {
             Entity ent = this.getEntity(location);
             Tile tile = this.map.get(location);
 
-            if (ent != null && ent.getType().equals(item) && !stuff.contains(tile)) {
-                stuff.add(tile);
+            if (ent != null && ent.getType().equals(item) && !tilesWithDestinations.contains(tile)) {
+                tilesWithDestinations.add(tile);
             }
 
             List<Coordinate> availableMoves = tile.getAvailableMoves();
@@ -153,15 +133,13 @@ public class Map {
     }
 
     public List<Coordinate> checkForPath(Coordinate start) {
-        Tile end = this.stuff.stream().min(Comparator.comparingInt(Tile::getPathWeight)).get();
+        Tile end = this.tilesWithDestinations.stream().min(Comparator.comparingInt(Tile::getPathWeight)).get();
         List<Coordinate> path = new ArrayList<>();
 
         while (!end.getTileCoordinate().equals(start)) {
             path.add(end.getTileCoordinate());
             end = getTile(end.getPrevLocation());
         }
-
-//        System.out.println(Arrays.toString(path.stream().map(Coordinate::toString).toArray()));
         return path;
     }
 }

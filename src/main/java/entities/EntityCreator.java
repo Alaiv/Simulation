@@ -1,7 +1,7 @@
 package entities;
 
 public class EntityCreator {
-    public Entity createNewEntity(EntityTypes type) {
+    public Entity createNewEntityWithRandomStats(EntityTypes type) {
 
         switch (type) {
             case HERBIVORE -> {

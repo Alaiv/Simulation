@@ -4,12 +4,11 @@ import location.Coordinate;
 import location.Map;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public abstract class Creature extends Entity {
-    private int speed;
+    private final int speed;
     protected int health;
 
     private Coordinate currentCoordinate;

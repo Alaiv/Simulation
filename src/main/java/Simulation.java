@@ -3,20 +3,19 @@ import actions.InitAction;
 import actions.TurnAction;
 import location.Map;
 
+import javax.swing.*;
 import java.util.List;
-import java.util.Scanner;
 
-public class Simulation {
+public class Simulation extends JFrame {
     private final Map map;
     private int stepCounter = 0;
-    private final int MAX_STEP = 100;
+    private final int MAX_STEP = 25;
 
-    private ConsoleRenderer renderer;
+    private final ConsoleRenderer renderer;
     private final List<InitAction> initActions;
-    private List<TurnAction> turnActions;
+    private final List<TurnAction> turnActions;
 
     private GameStates gameState = GameStates.NOT_STARTED;
-
 
     public Simulation(Map map, List<InitAction> initAction, List<TurnAction> turnAction, ConsoleRenderer renderer) {
         this.map = map;
@@ -25,12 +24,11 @@ public class Simulation {
         this.renderer = renderer;
     }
 
-    public void startSimulation() {
+    public void startSimulation() throws InterruptedException {
+        System.out.println("Simulation started.");
         this.gameState = GameStates.STARTED;
         this.initActions.forEach(iAction -> iAction.activate(this.map));
         renderer.render(this.map, this.map.ROWS_COUNT, this.map.COLUMN_COUNT);
-
-        Scanner sc = new Scanner(System.in);
 
         while (this.gameState.equals(GameStates.STARTED) || this.gameState.equals(GameStates.PAUSED)) {
             if (this.gameState.equals(GameStates.PAUSED)) {
@@ -38,11 +36,19 @@ public class Simulation {
             }
             turnActions.forEach(tAction -> tAction.makeOneRotation(map));
             renderer.render(this.map, this.map.ROWS_COUNT, this.map.COLUMN_COUNT);
-            sc.nextLine();
+            Thread.sleep(1000);
             this.stepCounter++;
 
             if (this.stepCounter == MAX_STEP) {
                 this.endSimulation();
+                System.out.println("Simulation ended.");
+            }
+
+            if (this.stepCounter == 10) {
+                this.pauseSimulation();
+                System.out.println("Sumulation paused for 2 seconds");
+                Thread.sleep(2000);
+                this.gameState = GameStates.STARTED;
             }
         }
     }
