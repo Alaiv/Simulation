@@ -10,7 +10,6 @@ public class Simulation extends JFrame {
     private final Map map;
     private int stepCounter = 0;
     private final int MAX_STEP = 25;
-
     private final ConsoleRenderer renderer;
     private final List<InitAction> initActions;
     private final List<TurnAction> turnActions;
@@ -28,14 +27,14 @@ public class Simulation extends JFrame {
         System.out.println("Simulation started.");
         this.gameState = GameStates.STARTED;
         this.initActions.forEach(iAction -> iAction.activate(this.map));
-        renderer.render(this.map, this.map.ROWS_COUNT, this.map.COLUMN_COUNT);
+        renderer.render(this.map, this.map.getRowsCount(), this.map.getColumnCount());
 
         while (this.gameState.equals(GameStates.STARTED) || this.gameState.equals(GameStates.PAUSED)) {
             if (this.gameState.equals(GameStates.PAUSED)) {
                 continue;
             }
             turnActions.forEach(tAction -> tAction.makeOneRotation(map));
-            renderer.render(this.map, this.map.ROWS_COUNT, this.map.COLUMN_COUNT);
+            renderer.render(this.map, this.map.getRowsCount(), this.map.getColumnCount());
             Thread.sleep(1000);
             this.stepCounter++;
 

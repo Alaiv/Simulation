@@ -7,9 +7,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("𓃵");
-
-        Map map = new Map();
+        Map map = new Map(10, 30);
         List<InitAction> initActions = List.of(new InitAction());
         List<TurnAction> turnAction = List.of(new MoveAction(), new RefillGrassAction(), new RefillHerbivoreAction());
         ConsoleRenderer renderer = new ConsoleRenderer();

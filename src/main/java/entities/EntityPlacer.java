@@ -9,10 +9,10 @@ public class EntityPlacer {
 
     public void placeEntities(List<Entity> entities, Map map) {
         entities.forEach((e) -> {
-            Coordinate c = Coordinate.getRandomCoordinate(map.ROWS_COUNT, map.COLUMN_COUNT);
+            Coordinate c = Coordinate.getRandomCoordinate(map.getRowsCount(), map.getColumnCount());
 
             while (map.cellIsTaken(c)) {
-                c = Coordinate.getRandomCoordinate(map.ROWS_COUNT, map.COLUMN_COUNT);
+                c = Coordinate.getRandomCoordinate(map.getRowsCount(), map.getColumnCount());
             }
 
             map.addEntity(c, e);

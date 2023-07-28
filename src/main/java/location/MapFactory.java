@@ -6,7 +6,11 @@ import java.util.stream.Stream;
 
 public class MapFactory {
     private static final HashMap<Coordinate, Tile> map = new HashMap<>();
-    public static HashMap<Coordinate, Tile> createMap(int rows, int columns) {
+    public static HashMap<Coordinate, Tile> createMap(int rows, int columns) throws Exception {
+        if (rows < 5 || columns < 5) {
+            throw new Exception();
+        }
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 Coordinate coordinate = new Coordinate(i, j);

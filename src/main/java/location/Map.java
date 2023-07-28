@@ -5,14 +5,14 @@ import entities.*;
 import java.util.*;
 
 public class Map {
-    private final HashMap<Coordinate, Tile> map;
+    private HashMap<Coordinate, Tile> map = new HashMap<>();
     private int amount = 0;
     private int grassAmount = 0;
     private int herbivoreAmount = 0;
     private final int MAX_AMOUNT = 100;
 
-    public final int ROWS_COUNT = 10;
-    public final int COLUMN_COUNT = 30;
+    private int rowsCount = 10;
+    private int columnCount = 30;
     private List<Tile> tilesWithDestinations;
 
     public int getGrassAmount() {
@@ -23,8 +23,24 @@ public class Map {
         return herbivoreAmount;
     }
 
-    public Map() {
-        this.map = MapFactory.createMap(ROWS_COUNT, COLUMN_COUNT);
+    public Map(int rows, int columns) {
+        try {
+            this.map = MapFactory.createMap(rows, columns);
+            this.rowsCount = rows;
+            this.columnCount = columns;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Размер карты слишком мал. Количество строк и столбцов не может быть меньше 5.");
+        }
+
+    }
+
+    public int getRowsCount() {
+        return rowsCount;
+    }
+
+    public int getColumnCount() {
+        return columnCount;
     }
 
     public void addEntity(Coordinate cord, Entity ent) {
@@ -90,7 +106,7 @@ public class Map {
         return creatureList;
     }
 
-
+    // to-do: улучшить логику поиска пути
     public void dfs(EntityTypes item, Coordinate cord) {
         this.tilesWithDestinations = new ArrayList<>();
         Queue<Coordinate> cords = new PriorityQueue<>();
